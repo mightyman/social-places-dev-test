@@ -1,0 +1,42 @@
+{
+    "GET": {
+        "api_dashboard_links": "\/api\/dashboard-links",
+        "api_stores": "\/api\/stores\/index",
+        "api_stores_filters": "\/api\/stores\/filters",
+        "api_brands_filter": "\/api\/filters\/brands",
+        "api_stores_temporary_folder": "\/api\/stores\/temporary-folder",
+        "api_users": "\/api\/users\/index",
+        "api_users_filters": "\/api\/users\/filters",
+        "api_users_me": "\/api\/users\/me",
+        "api_user_information": "\/api\/users\/:user",
+        "api_users_primary_roles": "\/api\/users\/fetch\/roles"
+    },
+    "POST": {
+        "api_login": "\/api\/login",
+        "api_logout": "\/api\/logout",
+        "api_dashboard_links": "\/api\/dashboard-links",
+        "api_stores": "\/api\/stores\/index",
+        "api_stores_filters": "\/api\/stores\/filters",
+        "api_brands_filter": "\/api\/filters\/brands",
+        "api_stores_upload": "\/api\/stores\/import\/upload",
+        "api_store_export": "\/api\/stores\/export",
+        "api_store_process_import": "\/api\/stores\/import\/process",
+        "api_users": "\/api\/users\/index",
+        "api_users_filters": "\/api\/users\/filters",
+        "api_user_unique_email": "\/api\/users\/unique",
+        "api_user_create": "\/api\/users\/create",
+        "api_user_edit": "\/api\/users\/edit\/:user"
+    },
+    "PUT": {
+        "api_dashboard_links": "\/api\/dashboard-links",
+        "api_brands_filter": "\/api\/filters\/brands"
+    },
+    "PATCH": {
+        "api_dashboard_links": "\/api\/dashboard-links",
+        "api_brands_filter": "\/api\/filters\/brands"
+    },
+    "DELETE": {
+        "api_dashboard_links": "\/api\/dashboard-links",
+        "api_brands_filter": "\/api\/filters\/brands"
+    }
+}

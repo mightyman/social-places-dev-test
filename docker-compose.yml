@@ -1,0 +1,65 @@
+version: "3.7"
+services:
+    # Docker Hub: https://hub.docker.com/_/mysql
+    database:
+        hostname: database
+        image: mysql:8.0.27
+        restart: unless-stopped
+        command: mysqld --sql_mode="NO_ENGINE_SUBSTITUTION" --innodb_buffer_pool_size=1G --innodb_log_file_size=256M --innodb_flush_log_at_trx_commit=1 --innodb_flush_method=O_DIRECT --default-authentication-plugin=mysql_native_password --skip-mysqlx
+        env_file:
+            - ./docker/database.env
+        networks:
+            - backend
+        ports:
+            - 3306:3306
+        logging:
+            options:
+                max-file: "1"
+                max-size: "1m"
+    # Docker Hub: https://hub.docker.com/r/mailhog/mailhog
+    mail:
+        hostname: mail
+        restart: unless-stopped
+        image: mailhog/mailhog
+        networks:
+            - backend
+        ports:
+            - 1025:1025
+            - 8025:8025
+        logging:
+            options:
+                max-file: "1"
+                max-size: "1m"
+    # Docker Hub: https://hub.docker.com/repository/docker/socialpjames/socialplaces-developer-test
+    application:
+        hostname: application
+        image: socialpjames/socialplaces-developer-test:latest
+        restart: unless-stopped
+        env_file:
+            - ./docker/database.env
+            - ./docker/docker.env
+        working_dir: /var/www/html
+        volumes:
+            - ./:/var/www/html
+            - ./vendor:/var/www/html/vendor:delegated
+            - ./databases:/var/www/html/databases:delegated
+            - ./node_modules:/var/www/html/node_modules:delegated
+            - /var/www/html/var
+            - /var/www/html/public/build
+        networks:
+            - backend
+        ports:
+            - 80:80
+            - 443:443
+        depends_on:
+            - mail
+            - database
+        logging:
+            options:
+                max-file: "1"
+                max-size: "1m"
+        stdin_open: true
+        tty: true
+networks:
+    backend:
+        driver: 'bridge'

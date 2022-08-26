@@ -1,0 +1,62 @@
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+/public/build/
+/var/
+/vendor/
+###< symfony/framework-bundle ###
+
+###> symfony/phpunit-bridge ###
+.phpunit
+.phpunit.result.cache
+/phpunit.xml
+###< symfony/phpunit-bridge ###
+
+###> symfony/web-server-bundle ###
+/.web-server-pid
+###< symfony/web-server-bundle ###
+
+### ###
+node_modules
+/node_modules/
+npm-debug.log
+yarn-error.log
+public/public_assets/index.html
+public/public_assets/assets/js/app.js.map
+### ###
+
+### ###
+/public/bundles/*
+!/var/cache/dev/
+!/var/cache/prod/
+/var/cache/*
+!/var/cache/.gitkeep
+!/var/sessions/dev/
+!/var/sessions/prod/
+/var/sessions/dev/sess*
+/var/sessions/prod/sess*
+/var/sessions/sess*
+!/var/log/
+!/var/snappy
+/var/log/dev.log
+/var/log/prod.log
+/var/log/prod.deprecations.log
+/var/spool/delayed/*
+!/var/spool/delayed/.gitkeep
+!/var/snappy/.gitignore
+!/var/SymfonyRequirements.php
+!/vendor/
+/vendor/*
+*.DS_Store
+bower_components
+*.swp
+*.psd
+.cache
+.idea
+.localstack
+sql_logs\.txt
+/tmp/
+### ###
