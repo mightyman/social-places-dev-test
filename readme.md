@@ -4,9 +4,6 @@
 
 #### Social Places
 We are [Social Places](https://socialplaces.io); a local marketing software agency that provides listings, reputation, bookings and social interactions across multiple platforms and channels.
-
-We are [Social Places](https://socialplaces.io), a local marketing software agency that provides listings, reputation, bookings and social interactions across
-multiple platforms and channels.  
 For a great summary of the services we offer, please watch our [2021 Product Overview](https://www.youtube.com/watch?v=CLQeB5pFpNw) [2:47] YouTube video.
 
 #### Developers
