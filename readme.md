@@ -24,21 +24,6 @@ items that will award bonus points and some very impressed "examiner".
 ### How to Proceed:
 
 1. Fork the repository to your own account.
-2. Clone the forked repository using your preferred git client 
-   1. While it is not imperative that a git client such as [GitHub Desktop](https://desktop.github.com) or [Fork](https://git-fork.com/) is used we highly, highly recommend it. We work as a team and need to be cognisant of each other's commits and quality of committed work.
-3. Spin up the application:
-   1. If you know how Docker works `docker-compose up` or `docker-compose start` (images are about 1gb)
-      1. This will run `composer install` for you
-      2. After Docker has started, in a new terminal window\tab, please run `docker-compose exec application bash`
-      3. Next in the Docker bash run `console doctrine:schema:update --force` to ensure your database is up-to-date.
-      4. The application will be served on http://localhost with mail running on http://localhost:8025
-   2. Else you can use the [Symfony CLI](https://symfony.com/download) tool
-      1. You will need to run `composer install` first
-      2. Set up your `.env` file to point to your database
-         1. You'll have to set your own database up
-      3. From your project directory run `php bin\console doctrine:schema:update --force` to ensure your database is up-to-date.
-      4. To start serving the content: `symfony server:start`
-      5. The application will be served by the Symfony CLI
 2. Clone the forked repository using your preferred git client
     1. While it is not imperative that a git client such as [GitHub Desktop](https://desktop.github.com) or [Fork](https://git-fork.com/) is used we highly,
        highly recommend it.  
