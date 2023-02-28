@@ -43,6 +43,22 @@ const router = new VueRouter({
                     ]
                 },
                 {
+                    path: '/contact',
+                    component: PublicEntry,
+                    name: 'Public Entry',
+                    redirect: 'contact',
+                    children: [
+                        {
+                            path: 'contact',
+                            component: ContactFormIndex,
+                            name: 'Contact',
+                            meta: {
+                                title: 'Social Places | ContactForm'
+                            }
+                        }
+                    ]
+                },
+                {
                     path: '',
                     component: ApplicationEntry,
                     name: 'Application Entry',

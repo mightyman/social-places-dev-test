@@ -16,24 +16,27 @@ class DefaultController extends AbstractController
     }
 
     #[Route('/', name: 'index')]
-    #[Route('/login', name: 'login')]
+    #[Route('/login', name: 'login')]   
+    #[Route('/contact', name: 'contact')]
+    function contact()
+    {
+        return $this->render('base.html.twig',[
+            "component" => "ContactFormIndex"
+        ]);
+    }
     #[Route('/dashboard', name: 'dashboard', defaults: ['nav' => ['name' => 'Dashboard', 'icon' => 'fas fa-users', 'dashboard' => 'admin', 'divider' => true]])]
     #[Route('/users', name: 'users', defaults: ['nav' => ['name' => 'Users', 'icon' => 'fas fa-users', 'dashboard' => 'admin']])]
     #[Route('/users/create', name: 'users_create')]
     #[Route('/users/edit/{id}', name: 'users_edit')]
     #[Route('/stores', name: 'stores', defaults: ['nav' => ['name' => 'Stores', 'icon' => 'fas fa-store', 'dashboard' => 'admin']])]
     #[Route('/stores/import', name: 'stores_import')]
-    public function index(Request $request): RedirectResponse|Response {
-        if ($this->getUser() === null && $request->attributes->get('_route') == 'contact') {
-            return $this->redirect($this->generateUrl('login'));
-        }
+    public function index(Request $request): RedirectResponse|Response {        
         if ($this->getUser() === null && $request->attributes->get('_route') !== 'login') {
             return $this->redirect($this->generateUrl('login'));
         }
         if ($this->getUser() !== null && in_array($request->attributes->get('_route'), ['login', 'index'], true)) {
             return $this->redirect($this->generateUrl('dashboard'));
-        }
-
+        }        
         return $this->render('base.html.twig');
     }
 
