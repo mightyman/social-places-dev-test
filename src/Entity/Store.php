@@ -9,6 +9,8 @@ use App\Services\StoreService;
 use App\Traits\Entity\HasDateCreated;
 use App\Traits\Entity\HasDateUpdated;
 use App\Traits\Entity\HasId;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -143,8 +145,12 @@ class Store
     #[ImportExportAttribute]
     private ?float $longitude;
 
+    #[ORM\OneToMany(mappedBy: 'store', targetEntity: Contact::class)]
+    private Collection $contacts;
+
     public function __construct() {
         $this->status = StoreStatus::OPEN;
+        $this->contacts = new ArrayCollection();
     }
 
     public function getName(): string {
@@ -363,5 +369,35 @@ class Store
             $longitude = (float)$longitude;
         }
         $this->longitude = $longitude;
+    }
+
+    /**
+     * @return Collection<int, Contact>
+     */
+    public function getContacts(): Collection
+    {
+        return $this->contacts;
+    }
+
+    public function addContact(Contact $contact): self
+    {
+        if (!$this->contacts->contains($contact)) {
+            $this->contacts->add($contact);
+            $contact->setStore($this);
+        }
+
+        return $this;
+    }
+
+    public function removeContact(Contact $contact): self
+    {
+        if ($this->contacts->removeElement($contact)) {
+            // set the owning side to null (unless already changed)
+            if ($contact->getStore() === $this) {
+                $contact->setStore(null);
+            }
+        }
+
+        return $this;
     }
 }
