@@ -280,6 +280,7 @@ class StoreController extends BaseVueController
         $row_count = $worksheet->getHighestRow();
         
         $errors = [];
+        $batch_size = $row_count;
         // Start from row 2, as the first row is assumed to be a header
         for($row = 2; $row <= $row_count; $row ++ )
         {
@@ -330,11 +331,19 @@ class StoreController extends BaseVueController
             } else {
                 // If the row data is valid, save it to the database
                 $entityManager->persist($store);
+                // flush the batch every $batchSize entities
+                if (($row % $batch_size) === 0) {
+                    $entityManager->flush();
+                    $entityManager->clear();
+                }
             }            
         }
 
-        // Save changes to the database
+        // Save any remaining changes to the database
         $entityManager->flush();
+
+
+
 
 
         // If there are errors, return them as a JSON response
