@@ -32,6 +32,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 
 class StoreController extends BaseVueController
 {
@@ -265,12 +266,81 @@ class StoreController extends BaseVueController
      * Feel free to update any supporting code to the table to help speed things up
      */
     #[Route('/api/stores/import/process', name: 'api_store_process_import', methods: 'POST')]
-    public function import(Request $request, ValidatorInterface $validator): StreamedResponse|JsonResponse {
+    public function import(Request $request, ValidatorInterface $validator, EntityManagerInterface $entityManager): StreamedResponse|JsonResponse {
         $folder = $request->get('folder');
         $fileName = $request->get('fileName');
         $filePath = FileUploadService::CONTENT_PATH . "/temp-uploads/$folder/$fileName";
 
-        // TODO: read file and process import
+        //impor the excel file
+        $reader  = new Xlsx();
+        $spreadsheet = $reader->load($filePath);
+        $worksheet = $spreadsheet->getActiveSheet();
+
+        //get row count 
+        $row_count = $worksheet->getHighestRow();
+        
+        $errors = [];
+        // Start from row 2, as the first row is assumed to be a header
+        for($row = 2; $row <= $row_count; $row ++ )
+        {
+            $data = [];
+            // Assume 26 columns (A-Z)
+            for ($col = 1; $col <= 27; $col++) {  
+                $cellValue = $worksheet->getCell("$col$row")->getValue();
+                $data[] = $cellValue;
+            }
+
+            // Validate the row data using the Store entity validation
+            $store = new Store();
+            $store->setName($data[1]);
+            $store->setBrand($data[2]);
+            $store->setIndustry($data[3]);
+            $store->setStatus($data[4]);
+            $store->setStatusFromName($data[5]);
+            $store->setApiId($data[6]);
+            $store->setFacebookVerified($data[7]);
+            $store->setFacebookId($data[8]);
+            $store->setFacebookPageName($data[9]);
+            $store->setFacebookUrl($data[10]);
+            $store->setGoogleVerified($data[11]);
+            $store->setGooglePlaceId($data[12]);
+            $store->setGoogleLocationId($data[13]);
+            $store->setGoogleMapsUrl($data[14]);
+            $store->setTripAdvisorVerified($data[15]);
+            $store->setTripAdvisorId($data[16]);
+            $store->setTripAdvisorPartnerPropertyId($data[17]);
+            $store->setTripAdvisorUrl($data[18]);
+            $store->setZomatoVerified($data[19]);
+            $store->setZomatoId($data[20]);
+            $store->setZomatoUrl($data[21]);
+            $store->setInstagramVerified($data[22]);
+            $store->setInstagramId($data[23]);
+            $store->setInstagramUrl($data[24]);
+            $store->setLatitude($data[25]);
+            $store->setLongitude($data[26]);
+
+            $violations = $validator->validate($store);
+            if ($violations->count() > 0) {
+                //If there are validation errors, add them to the errors array
+                $rowErrors = [];
+                foreach ($violations as $violation) {
+                    $rowErrors[] = $violation->getMessage();
+                }
+                $errors[$row] = $rowErrors;
+            } else {
+                // If the row data is valid, save it to the database
+                $entityManager->persist($store);
+            }            
+        }
+
+        // Save changes to the database
+        $entityManager->flush();
+
+
+        // If there are errors, return them as a JSON response
+        if (!empty($errors)) {
+            return $this->json($errors);
+        }
 
         return $this->json([]);
     }
